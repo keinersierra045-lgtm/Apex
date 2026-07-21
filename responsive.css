@@ -1,0 +1,127 @@
+/* ================================================================
+   APEX — responsive.css
+   Adapta el layout mobile-first de style.css a pantallas mayores.
+   No define color/tipografía nueva: solo reorganiza estructura.
+
+   Breakpoints usados:
+   - 768px  → tablet
+   - 1024px → escritorio
+   - 1280px → escritorio grande
+================================================================ */
+
+/* ----------------------------------------------------------------
+   TABLET (≥768px)
+---------------------------------------------------------------- */
+@media (min-width: 768px) {
+
+  :root {
+    --container-pad: var(--space-6);
+  }
+
+  .hero__title {
+    font-size: 4rem;
+  }
+
+  /* Categorías: 3 columnas en lugar de 1 */
+  .categories__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Productos: 2 columnas */
+  .products__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Valores de marca: 2 columnas */
+  .values__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Newsletter: input y botón en la misma fila */
+  .newsletter__form {
+    flex-direction: row;
+  }
+
+  .newsletter__form input {
+    flex: 1;
+  }
+
+  /* Footer: brand + 3 columnas de enlaces */
+  .site-footer__inner {
+    grid-template-columns: 1.5fr repeat(3, 1fr);
+  }
+}
+
+/* ----------------------------------------------------------------
+   ESCRITORIO (≥1024px)
+---------------------------------------------------------------- */
+@media (min-width: 1024px) {
+
+  /* Navegación principal visible; se retira el botón hamburguesa */
+  .main-nav {
+    display: block;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  /* Hero en dos columnas: texto a la izquierda, imagen a la derecha */
+  .hero__inner {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .hero__content {
+    flex: 1;
+    max-width: 560px;
+  }
+
+  .hero__media {
+    flex: 1;
+  }
+
+  .hero__title {
+    font-size: var(--fs-3xl);
+  }
+
+  /* El panel de búsqueda se centra y no ocupa todo el ancho */
+  .search-panel .container {
+    max-width: 640px;
+  }
+
+  /* Productos: 3 columnas */
+  .products__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Tarjeta de producto: revelar acciones al hacer hover (affordance de escritorio) */
+  .product-card__fav {
+    opacity: 0;
+  }
+
+  .product-card:hover .product-card__fav,
+  .product-card__fav:focus-visible {
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------------------------
+   ESCRITORIO GRANDE (≥1280px)
+---------------------------------------------------------------- */
+@media (min-width: 1280px) {
+
+  :root {
+    --container-pad: var(--space-7);
+  }
+
+  .hero__title {
+    font-size: 4.5rem;
+  }
+
+  /* Productos: 4 columnas para aprovechar el ancho extra */
+  .products__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
