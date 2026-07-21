@@ -1,0 +1,217 @@
+/* ================================================================
+   APEX — animations.css
+   Todo el movimiento del sitio vive aquí: transiciones de hover,
+   secuencia de carga del hero, scroll-reveal, micro-interacciones
+   y las transiciones de estado que activan menu.js / search.js /
+   animations.js mediante clases (.is-open, .is-visible, .is-updated).
+================================================================ */
+
+/* ----------------------------------------------------------------
+   1. MICRO-INTERACCIONES DE HOVER / FOCUS
+---------------------------------------------------------------- */
+
+/* Botones: leve elevación al interactuar */
+.btn {
+  transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  transform: translateY(-2px);
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  border-color: var(--color-text-muted);
+}
+
+/* Enlaces de navegación */
+.main-nav__link,
+.site-footer__col a {
+  transition: color var(--transition-fast);
+}
+
+/* Header: transición suave al aparecer la sombra de scroll */
+.site-header {
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+/* Iconos de acción del header */
+.header-actions__btn {
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.header-actions__btn:active {
+  transform: scale(0.92);
+}
+
+/* Chips de filtro */
+.filter-chip {
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+/* Categoría: zoom sutil de imagen al pasar el cursor */
+.category-card img {
+  transition: transform 500ms ease;
+}
+
+.category-card:hover img {
+  transform: scale(1.06);
+}
+
+/* Tarjeta de producto: elevación + sombra al pasar el cursor */
+.product-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-elevated);
+  border-color: var(--color-border-strong);
+}
+
+.product-card__fav {
+  transition: opacity var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.product-card__fav:active {
+  transform: scale(0.88);
+}
+
+/* ----------------------------------------------------------------
+   2. ELEMENTO FIRMA: "KINETIC PRICE TAG"
+   El punto junto al precio pulsa suavemente, como si el precio
+   estuviera "vivo" — refuerza la idea de producto técnico/en stock.
+---------------------------------------------------------------- */
+@keyframes pulse-dot {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(200, 255, 0, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(200, 255, 0, 0);
+  }
+}
+
+.product-card__price::before {
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
+
+/* ----------------------------------------------------------------
+   3. BADGE (carrito / favoritos): "pop" al actualizarse
+   cart.js / favorites.js añaden .is-updated tras cambiar la cifra
+   y la retiran al terminar la animación (evento 'animationend').
+---------------------------------------------------------------- */
+@keyframes badge-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.badge.is-updated {
+  animation: badge-pop 300ms ease;
+}
+
+/* ----------------------------------------------------------------
+   4. SECUENCIA DE ENTRADA DEL HERO
+   Se ejecuta sola al cargar la página (contenido above-the-fold,
+   no depende de scroll ni de JS). Efecto escalonado por delays.
+---------------------------------------------------------------- */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero .eyebrow,
+.hero__title,
+.hero__subtitle,
+.hero__actions,
+.hero__media {
+  animation: fade-in-up 700ms ease both;
+}
+
+.hero .eyebrow   { animation-delay: 0ms; }
+.hero__title     { animation-delay: 80ms; }
+.hero__subtitle  { animation-delay: 160ms; }
+.hero__actions   { animation-delay: 240ms; }
+.hero__media     { animation-delay: 200ms; }
+
+/* ----------------------------------------------------------------
+   5. SCROLL REVEAL
+   animations.js observa los elementos con clase .reveal mediante
+   IntersectionObserver y añade .is-visible al entrar en viewport.
+---------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------
+   6. MENÚ MÓVIL + OVERLAY
+   menu.js quita el atributo [hidden] y, en el frame siguiente,
+   añade .is-open para que la transición se ejecute correctamente.
+---------------------------------------------------------------- */
+.mobile-menu {
+  transform: translateX(100%);
+  transition: transform var(--transition-base) ease;
+}
+
+.mobile-menu.is-open {
+  transform: translateX(0);
+}
+
+.overlay {
+  opacity: 0;
+  transition: opacity var(--transition-base) ease;
+}
+
+.overlay.is-open {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------------
+   7. PANEL DE BÚSQUEDA
+   search.js aplica la misma lógica: quita [hidden] y añade .is-open.
+---------------------------------------------------------------- */
+.search-panel {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity var(--transition-base) ease, transform var(--transition-base) ease;
+}
+
+.search-panel.is-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------
+   8. ACCESIBILIDAD DE MOVIMIENTO
+   Quien prefiera menos movimiento no debería recibirlo.
+   Se conserva el cambio de estado (opacidad/color), se elimina
+   el desplazamiento y la repetición infinita.
+---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .product-card__price::before {
+    animation: none;
+  }
+}
